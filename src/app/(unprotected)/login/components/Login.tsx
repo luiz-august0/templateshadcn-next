@@ -1,0 +1,75 @@
+import { useState } from 'react';
+import { useForgotPasswordStep } from './forgotPasswordStep/useForgotPasswordStep';
+import { useLoginStep } from './loginStep/useLoginStep';
+import { useRecoveryStep } from './recoveryStep/useRecoveryStep';
+import { StepProps } from './types';
+import Skeleton from '@/components/customized/Skeleton/Skeleton';
+import { Button } from '@/components/ui/button';
+
+type StepsKey = 'LOGIN' | 'FORGOT_PASSWORD' | 'RECOVERY';
+
+type Steps = { [key: string]: StepProps };
+
+export default function Login({ recoveryToken }: { recoveryToken?: string }) {
+  const login = useLoginStep();
+  const forgotPassword = useForgotPasswordStep();
+  const recovery = useRecoveryStep(recoveryToken ?? '', () => {
+    step.clearErrors();
+    step.reset();
+    setActualStep('LOGIN');
+  });
+
+  const steps: Steps = {
+    LOGIN: {
+      ...login,
+    },
+    FORGOT_PASSWORD: {
+      ...forgotPassword,
+    },
+    RECOVERY: {
+      ...recovery,
+    },
+  };
+
+  const [actualStep, setActualStep] = useState<StepsKey>(recoveryToken ? 'RECOVERY' : 'LOGIN');
+  const step = steps[actualStep];
+
+  return (
+    <div className="flex h-screen">
+      <div className="hidden sm:flex sm:w-4/12 md:w-7/12 bg-gradient-to-b from-[#202020] via-[#303030] to-[#606060] bg-cover bg-center" />
+      <div className="w-full sm:w-8/12 md:w-5/12 flex items-center justify-center p-8">
+        <div className="w-full max-w-md space-y-6">
+          <div className="text-center">
+            <h1 className="text-2xl font-semibold">{step.title}</h1>
+            <p className="text-muted-foreground text-sm mt-2">{step.subtitle}</p>
+          </div>
+          <form onSubmit={step.onSubmit} className="flex flex-col items-center w-full mt-1 space-y-4" noValidate>
+            {step.fields}
+            {step.loading ? (
+              <div className="w-full mt-3 mb-2">
+                <Skeleton className="h-2 w-full bg-primary" />
+              </div>
+            ) : (
+              <Button type="submit" className="w-full mt-3 mb-2 text-base">
+                {step.buttonText}
+              </Button>
+            )}
+            {!step.loading && (
+              <Button
+                variant="ghost"
+                className="text-sm text-muted-foreground hover:underline"
+                onClick={() => {
+                  setActualStep(actualStep === 'LOGIN' ? 'FORGOT_PASSWORD' : 'LOGIN');
+                  step.clearErrors();
+                  step.reset();
+                }}
+              >
+                {actualStep === 'LOGIN' ? 'Esqueceu sua senha?' : 'Ir para o login'}
+              </Button>
+            )}
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
