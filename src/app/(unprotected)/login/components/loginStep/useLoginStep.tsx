@@ -21,8 +21,6 @@ export const useLoginStep = (): StepProps => {
     formState: { errors },
     clearErrors,
     reset,
-    watch,
-    setValue,
   } = form;
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -32,7 +30,6 @@ export const useLoginStep = (): StepProps => {
     const signInData = {
       login: data.login,
       password: data.password,
-      databasePassword: data.databasePassword,
     };
 
     const result = await signIn('credentials', {
@@ -72,24 +69,13 @@ export const useLoginStep = (): StepProps => {
           error={errors.login?.message}
         />
         <PasswordInput
-          value={watch('password')}
-          onChange={(e) => setValue('password', e.target.value)}
+          {...register('password')}
           required
           id="password"
           name="password"
           autoFocus
           label="Senha"
           error={errors.password?.message}
-        />
-        <PasswordInput
-          value={watch('databasePassword')}
-          onChange={(e) => setValue('databasePassword', e.target.value)}
-          required
-          id="databasePassword"
-          name="databasePassword"
-          autoFocus
-          label="Senha da conexão com o banco"
-          error={errors.databasePassword?.message}
         />
       </>
     ),

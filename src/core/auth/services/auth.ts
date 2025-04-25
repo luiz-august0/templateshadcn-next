@@ -5,7 +5,6 @@ export async function sessionLogin(session: SessionLogin) {
   const { data } = await httpDefaultInstance.post('/session/login', {
     login: session.login,
     password: session.password,
-    databasePassword: session.databasePassword,
   });
 
   return data;

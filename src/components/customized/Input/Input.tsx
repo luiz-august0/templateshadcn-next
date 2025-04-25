@@ -1,14 +1,15 @@
-import { type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, ReactNode } from 'react';
 
-import { Input as CNInput } from '@/components/ui/input';
+import { Input as CNInput, InputProps as CNInputProps } from '@/components/ui/input';
 import { cn } from '@/helpers/cn';
 
-interface Props extends Omit<ComponentPropsWithoutRef<typeof CNInput>, 'type'> {
+export interface InputProps extends CNInputProps {
   label?: string;
   error?: string;
+  right?: ReactNode;
 }
 
-export default function Input({ className, label, error, ...props }: Props) {
+const Input = forwardRef<HTMLInputElement, InputProps>(({ className, label, error, right, ...props }, ref) => {
   return (
     <div className="relative">
       {label && (
@@ -16,8 +17,13 @@ export default function Input({ className, label, error, ...props }: Props) {
           {label}
         </label>
       )}
-      <CNInput className={cn('pr-10', className)} {...props} />
+      <div className="relative">
+        <CNInput className={cn(error ? 'border-red-500' : '', className)} ref={ref} {...props} />
+        {right}
+      </div>
       {error && <span className="text-red-500 text-sm">{error}</span>}
     </div>
   );
-}
+});
+
+export default Input;

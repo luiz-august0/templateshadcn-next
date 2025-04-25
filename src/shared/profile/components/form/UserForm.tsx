@@ -1,18 +1,18 @@
+import StandardForm from '@/components/customized/FormTypes/StandardForm';
+import { FormButton } from '@/components/customized/FormTypes/types/models';
+import Input from '@/components/customized/Input/Input';
+import PasswordInput from '@/components/customized/PasswordInput/PasswordInput';
+import { Button } from '@/components/ui/button';
+import { mutateUser } from '@/core/users/services/users';
+import { User } from '@/core/users/types/models';
+import { successToast } from '@/helpers/toast';
+import { MultipartBean } from '@/shared/types/models';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Loader2 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { Dispatch, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { schemaValidation } from './schemaValidation';
-import StandardForm from '@/components/customized/FormTypes/StandardForm';
-import { User } from '@/core/users/types/models';
-import { mutateUser } from '@/core/users/services/users';
-import { successToast } from '@/helpers/toast';
-import { FormButton } from '@/components/customized/FormTypes/types/models';
-import { MultipartBean } from '@/shared/types/models';
-import PasswordInput from '@/components/customized/PasswordInput/PasswordInput';
-import Input from '@/components/customized/Input/Input';
-import { Button } from '@/components/ui/button';
-import { Loader } from 'lucide-react';
 
 type Props = {
   user?: User;
@@ -44,7 +44,6 @@ export default function UserForm({ user, userAuthenticated, open, setOpen, onSub
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
     setValue,
   } = form;
 
@@ -99,7 +98,7 @@ export default function UserForm({ user, userAuthenticated, open, setOpen, onSub
       title: 'Cancelar',
       color: 'primary',
       onClick: handleClose,
-      variant: 'default',
+      variant: 'outline',
     },
     {
       id: 'submit',
@@ -121,16 +120,16 @@ export default function UserForm({ user, userAuthenticated, open, setOpen, onSub
     <FormProvider {...form}>
       <StandardForm
         formButtons={buttons}
-        formTitle={userAuthenticated ? 'Editar meu usuário' : user ? `Usuário #${user.id}` : 'Novo'}
+        formTitle={userAuthenticated ? 'Editar meu usuário' : user ? `Editar usuário` : 'Novo'}
         handleClose={handleClose}
         open={open}
       >
         {loadingUser ? (
           <div className="flex justify-center">
-            <Loader />
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
           </div>
         ) : (
-          <div className="flex flex-col mt-4 gap-4">
+          <div className="flex flex-col gap-4">
             {(userAuthenticated || user?.id) && (
               <div
                 className="flex items-center"
@@ -190,8 +189,7 @@ export default function UserForm({ user, userAuthenticated, open, setOpen, onSub
               />
               {(updatePassword || !user) && (
                 <PasswordInput
-                  value={watch('password')}
-                  onChange={(e) => setValue('password', e.target.value)}
+                  {...register('password')}
                   required
                   id="password"
                   name="password"

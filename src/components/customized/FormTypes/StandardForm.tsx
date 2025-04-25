@@ -66,8 +66,8 @@ export default function StandardForm({
             </div>
           )}
         </DialogHeader>
-        <div className="py-4">{children}</div>
-        <DialogFooter className="flex flex-row gap-2 sm:justify-end">
+        {children}
+        <DialogFooter className="flex flex-row gap-2 justify-end pt-4">
           {formButtons.map((button) => (
             <Button
               key={button.id}

@@ -21,8 +21,7 @@ export const useRecoveryStep = (recoveryToken: string, onSuccess: () => void): S
     formState: { errors },
     clearErrors,
     reset,
-    watch,
-    setValue,
+    register,
   } = form;
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -52,8 +51,7 @@ export const useRecoveryStep = (recoveryToken: string, onSuccess: () => void): S
     fields: (
       <>
         <PasswordInput
-          value={watch('password')}
-          onChange={(e) => setValue('password', e.target.value)}
+          {...register('password')}
           required
           id="password"
           name="password"
@@ -62,8 +60,7 @@ export const useRecoveryStep = (recoveryToken: string, onSuccess: () => void): S
           error={errors.password?.message}
         />
         <PasswordInput
-          value={watch('confirmPassword')}
-          onChange={(e) => setValue('confirmPassword', e.target.value)}
+          {...register('confirmPassword')}
           required
           id="confirmPassword"
           name="confirmPassword"

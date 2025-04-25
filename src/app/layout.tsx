@@ -11,8 +11,8 @@ const fontInter = FontInter({
 });
 
 export const metadata: Metadata = {
-  title: 'Data Weaver',
-  description: 'Data Weaver',
+  title: 'Template',
+  description: 'Template',
 };
 
 export default function RootLayout({

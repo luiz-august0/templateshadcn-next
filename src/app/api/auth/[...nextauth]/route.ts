@@ -10,7 +10,6 @@ const nextAuthOptions: NextAuthOptions = {
       credentials: {
         login: { label: 'login', type: 'text' },
         password: { label: 'password', type: 'password' },
-        databasePassword: { label: 'databasePassword', type: 'password' },
       },
 
       async authorize(credentials, req) {
@@ -18,7 +17,6 @@ const nextAuthOptions: NextAuthOptions = {
           const sessionResponse = await sessionLogin({
             login: credentials?.login ?? '',
             password: credentials?.password ?? '',
-            databasePassword: credentials?.databasePassword ?? '',
           });
 
           if (sessionResponse) {

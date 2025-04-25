@@ -1,0 +1,51 @@
+'use client';
+
+import {
+  Sidebar as CNSidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+  useSidebar,
+} from '@/components/ui/sidebar';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { menus } from './menus';
+import { SidebarMenus } from './SidebarMenus';
+import { SidebarUserInfo } from './SidebarUserInfo';
+
+export default function Sidebar() {
+  const { state, toggleSidebar } = useSidebar();
+  const isCollapsed = state === 'collapsed';
+
+  return (
+    <CNSidebar className="z-50" collapsible="icon" variant="inset">
+      <SidebarHeader className="mb-4">
+        {/* {isCollapsed ? (
+          <Image src={'/images/logo-icon.png'} alt="Header" width={34} height={34} />
+        ) : (
+          <Image src={'/images/logo-header.png'} alt="Header" width={176} height={38} />
+        )} */}
+        <div className="absolute top-4 -right-3">
+          <button
+            onClick={toggleSidebar}
+            className="p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-all shadow"
+            aria-label="Toggle Sidebar"
+          >
+            {isCollapsed ? (
+              <ChevronRight className="size-5" aria-hidden="true" />
+            ) : (
+              <ChevronLeft className="size-5" aria-hidden="true" />
+            )}
+          </button>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarMenus menus={menus} />
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarUserInfo />
+      </SidebarFooter>
+      <SidebarRail />
+    </CNSidebar>
+  );
+}
