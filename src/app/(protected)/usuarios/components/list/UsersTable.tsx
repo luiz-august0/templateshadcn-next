@@ -1,11 +1,11 @@
 import Chip from '@/components/customized/Chip/Chip';
-import { DataTable } from '@/components/customized/DataTable/DataTable';
+import { DataTable, SortableHeader } from '@/components/customized/DataTable/DataTable';
 import { UserPageResponseDTO } from '@/core/users/types/dtos';
 import { EnumUserRole } from '@/core/users/types/enums';
 import { User } from '@/core/users/types/models';
 import { PaginationRequestDTO } from '@/shared/types/dtos';
 import { EnumDefaultStatus } from '@/shared/types/enums';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, SortingState } from '@tanstack/react-table';
 import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
@@ -14,17 +14,19 @@ type Props = {
   loading: boolean;
   setUser: Dispatch<React.SetStateAction<User | undefined>>;
   setOpen: Dispatch<React.SetStateAction<boolean>>;
+  sorting: SortingState;
+  setSorting: Dispatch<SetStateAction<SortingState>>;
 };
 
-export default function UsersTable({ list, setPagination, loading, setUser, setOpen }: Props) {
+export default function UsersTable({ list, setPagination, loading, setUser, setOpen, sorting, setSorting }: Props) {
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'id',
-      header: 'Cód.',
+      header: ({ column }) => <SortableHeader column={column} header="Cód" />,
     },
     {
       accessorKey: 'login',
-      header: 'Usuário',
+      header: ({ column }) => <SortableHeader column={column} header="Usuário" />,
     },
     {
       accessorKey: 'role',
@@ -53,6 +55,8 @@ export default function UsersTable({ list, setPagination, loading, setUser, setO
         setUser(user);
         setOpen(true);
       }}
+      sorting={sorting}
+      onSortingChange={setSorting}
     />
   );
 }

@@ -4,6 +4,7 @@ import { Inter as FontInter } from 'next/font/google';
 
 import { Toaster } from 'sonner';
 import './globals.css';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 const fontInter = FontInter({
   subsets: ['latin'],
@@ -21,12 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${fontInter.variable} antialiased`}>
-        <NextSessionProvider>
-          <Toaster richColors position="bottom-left" />
-          {children}
-        </NextSessionProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <NextSessionProvider>
+            <Toaster richColors position="bottom-left" />
+            {children}
+          </NextSessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

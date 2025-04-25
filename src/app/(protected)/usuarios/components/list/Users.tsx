@@ -7,7 +7,7 @@ import UsersTable from './UsersTable';
 import HeaderPage from '@/components/customized/HeaderPage/HeaderPage';
 
 export default function Users() {
-  const { getList, list, setPagination, loading, status, setStatus, search } = useUsersListQuery();
+  const { getList, list, setPagination, loading, status, setStatus, search, sorting, setSorting } = useUsersListQuery();
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
@@ -24,7 +24,15 @@ export default function Users() {
         }}
       />
       <div className="mt-10 px-3">
-        <UsersTable list={list} setPagination={setPagination} loading={loading} setUser={setUser} setOpen={setOpen} />
+        <UsersTable
+          list={list}
+          setPagination={setPagination}
+          loading={loading}
+          setUser={setUser}
+          setOpen={setOpen}
+          sorting={sorting}
+          setSorting={setSorting}
+        />
       </div>
       <Filters openFilter={openFilter} setOpenFilter={setOpenFilter} status={status} setStatus={setStatus} />
       {open && <UserForm open={open} setOpen={setOpen} user={user} onSubmitForm={() => getList()} />}

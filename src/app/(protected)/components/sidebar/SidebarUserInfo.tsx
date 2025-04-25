@@ -10,7 +10,8 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { useLogout } from '@/hooks/use-logout';
 import { AuthContext } from '@/providers/AuthProvider';
-import { ChevronsUpDown, LogOut, User } from 'lucide-react';
+import { ChevronsUpDown, LogOut, Moon, Sun, User } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { useContext } from 'react';
 
 export function SidebarUserInfo() {
@@ -18,6 +19,7 @@ export function SidebarUserInfo() {
   const { setOpenUserModal, user } = useContext(AuthContext);
   const isCollapsed = state === 'collapsed';
   const { logout } = useLogout();
+  const { setTheme } = useTheme();
 
   return (
     <SidebarMenu>
@@ -70,6 +72,25 @@ export function SidebarUserInfo() {
               <LogOut />
               Sair
             </DropdownMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <DropdownMenuItem className="hover:cursor-pointer">
+                  <Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <Moon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                  Mudar tema
+                </DropdownMenuItem>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg z-50"
+                side={isMobile ? 'bottom' : 'right'}
+                align="end"
+                sideOffset={4}
+              >
+                <DropdownMenuItem onClick={() => setTheme('light')}>Claro</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('dark')}>Escuro</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('system')}>Padrão</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

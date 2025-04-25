@@ -1,9 +1,11 @@
 import { getUsersList } from '@/core/users/services/users';
 import { UserPageResponseDTO } from '@/core/users/types/dtos';
+import { convertSortingToSortRequest } from '@/helpers/converters';
 import { debounce } from '@/helpers/debounce';
 import { FilterBuilder } from '@/shared/FilterBuilder';
 import { PaginationRequestDTO } from '@/shared/types/dtos';
 import { EnumDefaultStatus } from '@/shared/types/enums';
+import { SortingState } from '@tanstack/react-table';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function useUsersListQuery() {
@@ -15,6 +17,7 @@ export default function useUsersListQuery() {
   const [loading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<keyof typeof EnumDefaultStatus>('all');
   const [query, setQuery] = useState<string>();
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const getList = async () => {
     setLoading(true);
@@ -32,6 +35,7 @@ export default function useUsersListQuery() {
     const data = await getUsersList({
       paginationDTO: pagination,
       filterRequestDTO: filterBuilder.dto,
+      sort: convertSortingToSortRequest(sorting),
     });
 
     setList(data);
@@ -42,7 +46,7 @@ export default function useUsersListQuery() {
 
   useEffect(() => {
     getList();
-  }, [pagination, status, query]);
+  }, [pagination, status, query, sorting]);
 
   return {
     getList,
@@ -52,5 +56,7 @@ export default function useUsersListQuery() {
     status,
     setStatus,
     search,
+    sorting,
+    setSorting,
   };
 }

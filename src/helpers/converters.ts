@@ -1,3 +1,9 @@
+import { SortingState } from '@tanstack/react-table';
+
+export const convertSortingToSortRequest = (sorting: SortingState) => {
+  return (sorting?.length ?? 0) > 0 ? `${sorting[0].id}${sorting[0].desc ? ',desc' : ',asc'}` : undefined;
+};
+
 export const convertUrlToBlob = async (url: string) => {
   const response = await fetch(url, { method: 'GET' });
 

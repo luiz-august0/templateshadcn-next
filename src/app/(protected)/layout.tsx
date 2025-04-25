@@ -37,7 +37,7 @@ function RenderLayout({ children }: { children: ReactNode }) {
           </Button>
         </div>
       )}
-      <main className="flex-1 bg-elevated">{children}</main>
+      <main className="flex-1 bg-background">{children}</main>
     </div>
   );
 }

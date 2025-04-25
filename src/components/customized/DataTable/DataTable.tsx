@@ -1,11 +1,22 @@
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  Column,
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  OnChangeFn,
+  SortingState,
+  useReactTable,
+} from '@tanstack/react-table';
 
 import Paginator from '@/shared/pagination/Paginator';
 import { PaginationRequestDTO } from '@/shared/types/dtos';
 import { PagedList } from '@/shared/types/models';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Skeleton from '../Skeleton/Skeleton';
+import { Button } from '@/components/ui/button';
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -14,6 +25,23 @@ interface DataTableProps<TData, TValue> {
   setPagination?: Dispatch<SetStateAction<PaginationRequestDTO>>;
   loading: boolean;
   onRowClick?: (row: TData) => void;
+  sorting?: SortingState;
+  onSortingChange?: OnChangeFn<SortingState>;
+}
+
+export function SortableHeader({ column, header }: { column: Column<any, unknown>; header: string }) {
+  return (
+    <Button className="px-0" variant="ghost" onClick={() => column.toggleSorting()}>
+      {header}
+      {column.getIsSorted() === 'asc' ? (
+        <ArrowUp />
+      ) : !!column.getIsSorted() ? (
+        <ArrowDown />
+      ) : (
+        <ArrowUpDown className="text-gray-300" />
+      )}
+    </Button>
+  );
 }
 
 export function DataTable<TData, TValue>({
@@ -23,16 +51,23 @@ export function DataTable<TData, TValue>({
   setPagination,
   loading,
   onRowClick,
+  sorting,
+  onSortingChange,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange,
+    manualSorting: true,
+    state: {
+      sorting,
+    },
   });
 
   if (loading) {
     return (
-      <div className="rounded-md border bg-white">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -63,7 +98,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="rounded-lg border bg-white">
+      <div className="rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

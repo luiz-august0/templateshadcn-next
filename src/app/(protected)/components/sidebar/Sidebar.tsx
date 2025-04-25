@@ -28,7 +28,7 @@ export default function Sidebar() {
         <div className="absolute top-4 -right-3">
           <button
             onClick={toggleSidebar}
-            className="p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-all shadow cursor-pointer"
+            className="p-1 rounded-full bg-accent transition-all shadow cursor-pointer"
             aria-label="Toggle Sidebar"
           >
             {isCollapsed ? (
