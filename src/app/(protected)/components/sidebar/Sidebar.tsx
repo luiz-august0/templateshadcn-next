@@ -18,7 +18,7 @@ export default function Sidebar() {
   const isCollapsed = state === 'collapsed';
 
   return (
-    <CNSidebar className="z-50" collapsible="icon" variant="inset">
+    <CNSidebar className="z-40" collapsible="icon" variant="inset">
       <SidebarHeader className="mb-4">
         {/* {isCollapsed ? (
           <Image src={'/images/logo-icon.png'} alt="Header" width={34} height={34} />
@@ -28,7 +28,7 @@ export default function Sidebar() {
         <div className="absolute top-4 -right-3">
           <button
             onClick={toggleSidebar}
-            className="p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-all shadow"
+            className="p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-all shadow cursor-pointer"
             aria-label="Toggle Sidebar"
           >
             {isCollapsed ? (
@@ -45,7 +45,6 @@ export default function Sidebar() {
       <SidebarFooter>
         <SidebarUserInfo />
       </SidebarFooter>
-      <SidebarRail />
     </CNSidebar>
   );
 }
