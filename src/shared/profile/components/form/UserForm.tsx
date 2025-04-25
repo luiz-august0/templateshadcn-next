@@ -13,6 +13,7 @@ import { useSession } from 'next-auth/react';
 import { Dispatch, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { schemaValidation } from './schemaValidation';
+import Switch from '@/components/customized/Switch/Switch';
 
 type Props = {
   user?: User;
@@ -40,6 +41,7 @@ export default function UserForm({ user, userAuthenticated, open, setOpen, onSub
   });
 
   const {
+    watch,
     register,
     handleSubmit,
     formState: { errors },
@@ -132,28 +134,19 @@ export default function UserForm({ user, userAuthenticated, open, setOpen, onSub
           <div className="flex flex-col gap-4">
             {(userAuthenticated || user?.id) && (
               <div
-                className="flex items-center"
+                className="flex items-end"
                 style={{
                   justifyContent: userAuthenticated ? 'flex-end' : 'space-between',
                 }}
               >
-                {/*TODO {!userAuthenticated && user?.login !== 'admin' && (
-                  <FormControlLabel
-                    sx={{ margin: '0', marginBottom: '16px' }}
-                    value="top"
-                    control={
-                      <Switch
-                        checked={watch('active')}
-                        onChange={() => setValue('active', !watch('active'))}
-                        name="active"
-                        color="primary"
-                        id="user-active-switch"
-                      />
-                    }
+                {!userAuthenticated && user?.login !== 'admin' && (
+                  <Switch
                     label="Ativo"
-                    labelPlacement="top"
+                    id="user-active-switch"
+                    checked={watch('active')}
+                    onCheckedChange={(checked) => setValue('active', checked)}
                   />
-                )} */}
+                )}
                 <Button onClick={() => setUpdatePassword(true)} variant={'default'}>
                   Alterar senha
                 </Button>

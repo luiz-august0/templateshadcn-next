@@ -1,11 +1,12 @@
 'use client';
 
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, useSidebar } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AuthContext, AuthProvider } from '@/providers/AuthProvider';
-import { Loader2 } from 'lucide-react';
+import { AlignJustify, Loader2, Sandwich } from 'lucide-react';
 import { ReactNode, useContext } from 'react';
 import Sidebar from './components/sidebar/Sidebar';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   children: ReactNode;
@@ -14,6 +15,7 @@ interface Props {
 function RenderLayout({ children }: { children: ReactNode }) {
   const isMobile = useIsMobile();
   const { loadingSession } = useContext(AuthContext);
+  const { toggleSidebar } = useSidebar();
 
   if (loadingSession) {
     return (
@@ -27,8 +29,15 @@ function RenderLayout({ children }: { children: ReactNode }) {
   return (
     <div className={`flex w-full ${isMobile && 'flex-col'}`}>
       <Sidebar />
+      {isMobile && (
+        <div className="sticky z-10 top-0 w-full py-4 px-2 -mb-4">
+          <Button type="button" variant="outline" onClick={toggleSidebar}>
+            <AlignJustify className="mr-2 h-4 w-4" />
+            Menu
+          </Button>
+        </div>
+      )}
       <main className="flex-1 bg-elevated">{children}</main>
-      {/* {isMobile && <BottomBar />} */}
     </div>
   );
 }

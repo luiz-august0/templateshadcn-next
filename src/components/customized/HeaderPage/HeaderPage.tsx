@@ -19,7 +19,7 @@ export default function HeaderPage({ titlePage, search, setOpenFilter, setOpenFo
   const router = useRouter();
 
   return (
-    <div className="sticky top-0 flex min-h-24 rounded-es-lg rounded-ee-lg bg-background p-2 max-md:flex-col max-md:items-center md:items-end md:justify-between">
+    <div className="sticky z-10 top-0 flex min-h-24 rounded-es-lg rounded-ee-lg bg-background p-2 max-md:flex-col max-md:items-center md:items-end md:justify-between">
       <div className="flex flex-row items-center justify-center gap-4 max-md:mt-10">
         {back && (
           <Button variant="ghost" size="icon" onClick={() => router.back()} className="h-10 w-10">
