@@ -43,6 +43,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleSession = async () => {
     try {
       await sessionVerify();
+
+      setLoadingSession(false);
     } catch (error) {
       handlerHttpError(error);
       logout();
@@ -51,13 +53,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     (async () => {
+      setLoadingSession(true);
+
       if (status == 'authenticated') {
-        handleSession();
+        await handleSession();
       } else if (status == 'unauthenticated') {
         router.replace('/login');
       }
-
-      setLoadingSession(false);
     })();
   }, [status]);
 
